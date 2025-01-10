@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="certificate_of_employment_form" model="ir.ui.view">
+        <field name="name">certificate.of.employment.form</field>
+        <field name="model">certificate.of.employment</field>
+        <field name="arch" type="xml">
+            <form string="Certificate of Employment" create="false">    
+                <header>
+                    <div class="oe_header oe_background oe_padding">
+                        <!-- Workflow and Approval Flow -->
+                        <group class="oe_inline">
+                            <!-- Hidden Fields -->
+                            <field name="work_flow" widget="many2one" placeholder="Select Workflow" invisible="1"/>
+                            <field name="module_approval_flow" invisible="1">
+                                <tree editable="bottom">
+                                    <field name="module_approver_name" 
+                                        widget="many2one" 
+                                        options="{'no_create': True}" 
+                                        placeholder="Approver Name" />
+                                    <field name="module_approver_email" 
+                                        widget="email" 
+                                        placeholder="Approver Email" />
+                                    <field name="module_approval_status" 
+                                        placeholder="Approval Status"/>
+                                    <field name="module_doc_status" />
+                                    <field name="module_approval_sequence" 
+                                        placeholder="Approval Sequence"/>
+                                    <field name="module_approval_date" 
+                                        widget="datetime" 
+                                        placeholder="Approval Date"/>
+                                    <field name="module_approval_confirmed" 
+                                        widget="boolean"/>
+                                </tree>
+                            </field>
+                            <field name="can_approve" invisible="1"/>
+                            <field name="can_reject" invisible="1"/>
+                            <field name="can_cancel" invisible="1"/>
+                            <field name="current_sequence" invisible="1"/>
+                            <field name="current_docstatus" invisible="1" />  
+                        </group>
+                        <!-- Action Buttons and Status -->
+                        <div style="width: 100%; max-width: 2000px; margin: auto;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 10px;">
+                                
+                                <!-- Buttons Section -->
+                                <div style="display: flex; gap: 10px;">
+                                    <!-- Submit Button -->
+                                    <button name="action_submit" 
+                                            string="Submit" 
+                                            type="object" 
+                                            class="btn btn-primary" 
+                                            icon="fa-paper-plane" 
+                                            invisible="status != 'Draft'" 
+                                            style="padding: 8px 16px; font-size: 14px; border-radius: 4px;">
+                                    </button>
+                                    
+                                    <!-- Approve Button -->
+                                    <button name="action_approve" 
+                                            string="Approve" 
+                                            type="object" 
+                                            class="btn btn-success" 
+                                            icon="fa-check-circle" 
+                                            invisible="not can_approve or current_docstatus not in (1, 2)"
+                                            style="padding: 8px 16px; font-size: 14px; border-radius: 4px;">
+                                    </button>
+
+                                    <!-- Reject Button -->
+                                    <button name="action_reject"
+                                            string="Reject"
+                                            type="object"
+                                            class="btn btn-warning"
+                                            icon="fa-times-circle"
+                                            invisible="not can_reject or status == 'Rejected'"
+                                            style="padding: 8px 16px; font-size: 14px; border-radius: 4px;">
+                                    </button>
+
+                                    <!-- Cancel Button -->
+                                    <button name="action_cancel"
+                                            string="Cancel"
+                                            type="object"
+                                            class="btn btn-danger"
+                                            icon="fa-times-circle"
+                                            invisible="not can_cancel or status == 'Cancelled'"
+                                            style="padding: 8px 16px; font-size: 14px; border-radius: 4px;">
+                                    </button>
+                                </div>
+                                <!-- Status Badge -->
+                                <div>
+                                    <button name="action_generate_report_url" 
+                                            invisible="current_docstatus != 2"
+                                            type="object"
+                                            help="Click here to print Certificate of Employment."
+                                            style="background: linear-gradient(135deg, #ff6f61, #ff3c3c); 
+                                                border: none; 
+                                                margin-left:20px;
+                                                border-radius: 8px; 
+                                                padding: 10px 15px; 
+                                                cursor: pointer; 
+                                                color: white; 
+                                                font-size: 16px; 
+                                                display: inline-flex; 
+                                                align-items: center; 
+                                                justify-content: center;">
+                                        <span class="fa fa-file-pdf-o" style="font-size: 18px;"></span>
+                                    </button>
+                                   
+                                    <field name="status" 
+                                        widget="badge" 
+                                        decoration-info="current_docstatus == 1" 
+                                        decoration-success="current_docstatus == 2"
+                                        decoration-warning="current_docstatus == 3"
+                                        decoration-danger="current_docstatus == 4"
+                                        style="font-size: 14px; font-weight: bold; padding: 6px 12px; border-radius: 4px;">
+                                    </field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <group>
+                                <field name="employee" widget='many2one'/>
+                                <field name="first_name" readonly="1"/>
+                                <field name="middle_name" readonly="1"/>
+                                <field name="last_name" readonly="1"/>
+                                <!-- <field name="employee_category" readonly="1" /> -->
+                            </group>
+                        </group>
+                        <group>
+                            <field name="posting_date" widget="date"/>
+                            <!-- <field name="company"/> -->
+                            <field name="company_id"/>
+                            <field name="from_date" class="o_custom_from_date" widget="date" />
+                            <field name="to_date" class="o_custom_to_date" widget="date" /> 
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="COE Details">
+                            <group>
+                                <field name="type" widget="selection" />
+                                <field name="purpose" widget="selection" />
+                            </group>
+                            <group>
+                                <field name="others" invisible="purpose != 'Others'"/>
+                            </group>
+                        </page>
+                        <page string="Signatories">
+                            <group>
+                                <field name="certified_by" widget='many2one' options="{'no_open': True}"/>
+                            </group>
+                        </page>
+                    </notebook>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread" options="{'live_update': True}"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                    </div> 
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <!-- Tree View -->
+<record id="certificate_of_employment_tree_view" model="ir.ui.view">
+    <field name="name">certificate.of.employment.tree</field>
+    <field name="model">certificate.of.employment</field>
+    <field name="arch" type="xml">
+        <tree string="Certificate of Employment">
+            <field name="doc_name" />
+            <field name="employee"/>
+            <field name="type"/>
+
+            <field name="status" widget="badge"
+                   decoration-info="current_docstatus == 1"
+                   decoration-success="current_docstatus == 2"
+                   decoration-warning="current_docstatus == 3"
+                   decoration-danger="current_docstatus == 4"
+            />
+            <field name="current_docstatus" invisible="0"/>
+        </tree>
+    </field>
+</record>
+
+
+    <!-- Kanban View -->
+    <record id="certificate_of_employment_kanban_view" model="ir.ui.view">
+        <field name="name">certificate.of.employment.kanban</field>
+        <field name="model">certificate.of.employment</field>
+        <field name="arch" type="xml">
+            <kanban class="certificate_of_employment_kanban">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="o_kanban_card oe_kanban_global_click_edit custom-flex">
+                            <div class="o_kanban_info">
+                                <div><strong>Document Name:</strong> <field name="doc_name"/></div>
+                                <div><strong>Employee:</strong> <field name="employee"/></div>
+                                <div><strong>Posting Date:</strong> <field name="posting_date"/></div>
+                                <div><strong>COE Type:</strong> <field name="type"/></div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+     <!-- Actions -->
+    <record id="action_certificate_of_employment_tree" model="ir.actions.act_window">
+        <field name="name">Certificate of Employment</field>
+        <field name="res_model">certificate.of.employment</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create a new Certificate of Employment.
+            </p>
+        </field>
+    </record>
+
+    <!-- Print formatdaw -->
+
+    <menuitem id="menu_certificate_of_employment_child" 
+        name="Certificate of Employment" 
+        action="action_certificate_of_employment_tree" 
+        sequence="10"
+        web_icon="certificate_of_employment,static/src/desciption/diploma.png"/>
+
+    <menuitem id="signatories" 
+    name="Signatories" 
+    parent="menu_certificate_of_employment_child" 
+    action="action_coe_signatories_tree" 
+    sequence="20"/>
+</odoo>

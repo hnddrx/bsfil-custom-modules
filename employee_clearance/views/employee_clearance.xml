@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Tree View for Employee Clearance -->
+    <record id="view_employee_clearance_tree" model="ir.ui.view">
+        <field name="name">employee.clearance.tree</field>
+        <field name="model">employee.clearance</field>
+        <field name="arch" type="xml">
+            <tree string="Exit Clearance">
+                <field name="doc_name"/>
+                <field name="effective_date"/>
+                <field name="clearance_type"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View for Employee Clearance -->
+    <record id="view_employee_clearance_form" model="ir.ui.view">
+    <field name="name">employee.clearance.form</field>
+    <field name="model">employee.clearance</field>
+    <field name="arch" type="xml">
+        <form string="Exit Clearance">
+            <!-- HEADER -->
+            <header>
+                <!-- Add buttons or states here if needed -->
+                <button name="action_generate_report_url" 
+                        type="object"
+                        help="Click here to print Employee Clearance"
+                        style="background: linear-gradient(135deg, #ff6f61, #ff3c3c); 
+                            border: none; 
+                            margin-left:20px;
+                            border-radius: 8px; 
+                            padding: 10px 15px; 
+                            cursor: pointer; 
+                            color: white; 
+                            font-size: 16px; 
+                            display: inline-flex; 
+                            align-items: center; 
+                            justify-content: center;">
+                    <span class="fa fa-file-pdf-o" style="font-size: 18px;"></span>
+                </button>
+                
+            </header>
+            
+            <sheet>
+                <!-- EMPLOYEE AND CLEARANCE DETAILS -->
+                <group>
+                    <group>
+                        <field name="employee_id"/>
+                        <!-- <field name="employee_name" readonly="1"/> -->
+                        <field name="company"/>
+                        <field name="company_email"/>
+                        <field name="department"/>
+                    </group>
+                    <group>
+                        <field name="posting_date"/>
+                        <field name="clearance_type"/>
+                        <field name="employment_status"/>
+                        <field name="last_working_date"/>
+                        <field name="effective_date"/>
+                    </group>
+                </group>
+                
+                <!-- REASON AND REMARKS -->
+                <group>
+                    <field name="reason_for_leaving" placeholder="Provide reason for leaving..."/>
+                    <field name="remarks" placeholder="Additional remarks..."/>
+                </group>
+                
+                <!-- CONDITIONAL SECTION: RESIGNATION -->
+                <separator string="To Be Processed by HR Department" invisible="clearance_type != 'Resignation'"/>
+                
+                <!-- NOTEBOOK SECTION -->
+                <notebook>
+                    <page string="Department Manager" invisible="clearance_type != 'Resignation'">
+                        <field name="authorize_ids">
+                            <tree editable="bottom">
+                                <field name="status" />
+                                <field name="authorized"/>
+                                <field name="accountability" widget="selection"/>
+                                <field name="date"/>
+                                <field name="remarks"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Human Resources" invisible="clearance_type != 'Resignation'">
+                        <field name="human_resource_ids">
+                            <tree editable="bottom">
+                                <field name="status" />
+                                <field name="authorized"/>
+                                <field name="accountability" widget="selection"/>
+                                <field name="date"/>
+                                <field name="remarks"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+                <separator string="Consent to Settle Outstanding Obligations" colspan="4"/>
+                <group>
+                    <group>
+                        <div style="margin: 0px; font-size: 14px; text-align: justify; white-space: normal; line-height: 1.2; width: 550px;">
+                            <p style="width:100%;">
+                                This is to authorize the Company to deduct from my final pay any outstanding obligation for 
+                                money, asset, and/or property accounted to me as stated in this clearance. If my final pay 
+                                is insufficient to cover the amount or cost of my outstanding obligations and accountabilities, 
+                                I agree to settle the remaining balance on the last day of my work.
+                            </p>
+                        </div>
+                    </group>
+                    <group>
+                            <field name="conforme_employee_name" string="Employee Name"/>
+                            <field name="contact_number" string="Contact Number"/>
+                            <field name="consent" string="By checking this box I give my consent" widget="boolean" />
+                            <field name="signed_date" string="Signed Date" invisible="consent == False"/> 
+                        </group>
+                </group>
+
+            </sheet>
+            
+            <!-- CHATTER -->
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers"/>
+                <field name="message_ids" widget="mail_thread" options="{'live_update': True}"/>
+                <field name="activity_ids" widget="mail_activity"/>
+            </div>
+        </form>
+    </field>
+</record>
+
+
+    <!-- Tree View for Department Manager -->
+    <record id="view_department_manager_tree" model="ir.ui.view">
+        <field name="name">department.manager.tree</field>
+        <field name="model">department.manager</field>
+        <field name="arch" type="xml">
+            <tree string="Authorized">
+                <field name="authorized"/>
+                <field name="accountability"/>
+                <field name="status"/>
+                <field name="date"/>
+                <field name="remarks"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_human_resources_tree" model="ir.ui.view">
+        <field name="name">human.resources.tree</field>
+        <field name="model">human.resources</field>
+        <field name="arch" type="xml">
+            <tree string="Authorized">
+                <field name="authorized"/>
+                <field name="accountability"/>
+                <field name="status"/>
+                <field name="date"/>
+                <field name="remarks"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action to Open Employee Clearance Views -->
+    <record id="action_employee_clearance" model="ir.actions.act_window">
+        <field name="name">Exit Clearance</field>
+        <field name="res_model">employee.clearance</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Employee Exit Clearance
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item to Access Employee Clearance -->
+    <menuitem id="menu_employee_clearance" name="Exit Clearance" action="action_employee_clearance" web_icon="employee_clearance,static/src/description/customs-clearance.png"/>
+</odoo>

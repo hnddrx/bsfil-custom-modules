@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Main Form View -->
+    <record id="sanction_lists_form_view" model="ir.ui.view">
+        <field name="name">sanction.lists.form</field>
+        <field name="model">sanction.lists</field>
+        <field name="arch" type="xml">
+            <form>
+                <header> <button name="action_save" string="Save" type="object" class="btn-primary"/> </header>
+                <sheet>
+                    <group>
+                        <field name="doc_name" invisible="1"/>
+                        <field name="sanction_name"/>
+                        <field name="description" />
+                    </group>        
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread" options="{'live_update': True}"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                </div>                
+            </form>
+        </field>
+    </record>
+
+    <!-- Main Tree View -->
+    <record id="sanction_lists_tree_view" model="ir.ui.view">
+        <field name="name">sanction.lists.tree</field>
+        <field name="model">sanction.lists</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sanction_name"/>
+                <field name="description" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Kanban View for Sanction Lists -->
+    <record id="sanction_lists_kanban_view" model="ir.ui.view">
+        <field name="name">sanction.lists.kanban</field>
+        <field name="model">sanction.lists</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_view">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="o_kanban_card oe_kanban_global_click custom_sanction_kanban">
+                            <div class="o_kanban_primary_row"> 
+                                <field name="sanction_name"/>
+                                <field name="description" />
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Pivot View for Sanction Lists -->
+    <record id="sanction_lists_pivot_view" model="ir.ui.view">
+        <field name="name">sanction.lists.pivot</field>
+        <field name="model">sanction.lists</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="sanction_name" type="row"/>
+                <field name="description" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Main Action -->
+    <record id="sanction_lists_action" model="ir.actions.act_window">
+        <field name="name">Sanction List</field>
+        <field name="res_model">sanction.lists</field>
+        <field name="view_mode">tree,kanban,pivot,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create a new Sanction List.
+            </p>
+        </field>
+    </record>
+</odoo>

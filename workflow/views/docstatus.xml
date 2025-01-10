@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View -->
+    <record id="docstatus_form_view" model="ir.ui.view">
+        <field name="name">docstatus.form</field>
+        <field name="model">docstatus</field>
+        <field name="arch" type="xml">
+            <form string="Workflow">
+                <sheet>
+                    <group name="docstatus_details" string="Docstatus Details" class="o_form_group">
+                        <!-- Docstatus Name and Module -->
+                        <group>
+                            <!-- Document Name -->
+                            <field name="status_name" 
+                                placeholder="Enter Document Name" 
+                                string="Status Name" 
+                                required="1" 
+                                class="o_field_doc_name" 
+                                options="{'no_create': True}" />
+                                
+                          
+                        </group>
+
+                        <!-- Action Flow and Active Status -->
+                        <group>
+                            <!-- Action Flow -->
+                            <field name="doc_status_name" 
+                                placeholder="Choose Docstatus Name" 
+                                class="o_field_action_flow"
+                                widget="selection" />
+
+                            <!-- Active Status Toggle -->
+                            <field name="doc_status" 
+                                widget="integer" />
+                        </group>
+                    </group>
+                </sheet>
+                <!-- Chatter Section -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread" options="{'live_update': True}"/>
+                    
+                    <field name="activity_ids" widget="mail_activity"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- Workflow Tree View -->
+    <record id="docstatus_tree_view" model="ir.ui.view">
+        <field name="name">docstatus.tree</field>
+        <field name="model">docstatus</field>
+        <field name="arch" type="xml">
+            <tree string="Docstatus">     
+                <field name="status_name" string="Status Name" widget="badge" options="{'color': 'primary'}"   
+                                        decoration-info="doc_status == 1" 
+                                        decoration-success="doc_status == 2"
+                                        decoration-warning="doc_status == 3"
+                                        decoration-danger="doc_status == 4"
+                                   
+                                         />
+                <field name="doc_status_name"  widget="selection" options="{'no_create': True}"/>
+                <field name="doc_status"/>
+            </tree>
+        </field>
+    </record>
+
+      <!-- Action -->
+    <record id="action_docstatus" model="ir.actions.act_window">
+        <field name="name">Document Status</field>
+        <field name="res_model">docstatus</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Manage all docstatus here. Click <b>Create</b> to add a new docstatus.
+            </p>
+        </field>
+    </record>
+
+
+</odoo>

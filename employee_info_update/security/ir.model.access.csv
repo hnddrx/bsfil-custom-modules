@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_update_info,access.update.info,model_update_info,base.group_user,1,1,1,1
+access_update_detail,access.update.detail,model_detail_update,base.group_user,1,1,1,1
+access_ir_model_user,access.ir.model.user,base.model_ir_model,base.group_user,1,0,0,0
+access_ir_model_fields_user,access.ir.model.fields.user,base.model_ir_model_fields,base.group_user,1,0,0,0

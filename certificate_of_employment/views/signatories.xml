@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="coe_signatories_form" model="ir.ui.view">
+        <field name="name">coe.signatories.form</field>
+        <field name="model">coe.signatories</field>
+        <field name="arch" type="xml">
+            <form string="Certificate of Employment Signatories" create="false">
+                <sheet>
+                    <group>
+                        <field name='employee'/>
+                   
+                    </group>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread" options="{'live_update': True}"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                    </div> 
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="coe_signatories_tree_view" model="ir.ui.view">
+        <field name="name">coe.signatories.tree</field>
+        <field name="model">coe.signatories</field>
+        <field name="arch" type="xml">
+            <tree string="Certificate of Employment Signatories">
+                <field name="employee" />
+                
+            </tree>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_coe_signatories_tree" model="ir.actions.act_window">
+        <field name="name">Certificate of Employment Signatories</field>
+        <field name="res_model">coe.signatories</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create a new Certificate of Employment Signatory.
+            </p>
+        </field>
+    </record>
+</odoo>

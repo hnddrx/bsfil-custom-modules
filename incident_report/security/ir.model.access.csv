@@ -1,0 +1,4 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_incident_report,access_incident_report,model_incident_report,base.group_user,1,1,1,1
+access_involved_employees,access_involved_employees,model_involved_employees,base.group_user,1,1,1,1
+access_incident_approval_flow_user,access_incident_approval_flow_user,model_incident_approval_flow,base.group_user,1,1,1,1

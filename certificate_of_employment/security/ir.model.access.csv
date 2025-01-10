@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_certificate_of_employment_user,access_certificate_of_employment_user,model_certificate_of_employment,base.group_user,1,1,1,1
+access_coe_signatories_user,access_coe_signatories_user,model_coe_signatories,base.group_user,1,1,1,1
+access_module_approval_flow_user,access_module_approval_flow_user,model_module_approval_flow,base.group_user,1,1,1,1

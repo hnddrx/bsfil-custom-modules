@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="update_info_form_view" model="ir.ui.view">
+        <field name="name">update.info.form</field>
+        <field name="model">update.info</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <!-- Uncomment to add a save button -->
+                    <!-- <button name="action_save" string="Save" type="object" class="btn-primary"/> -->
+                    <!-- <button name="print_report" type="object" string="Print" class="btn btn-primary"/> -->
+                     <!-- 
+                     <field name="user_id" invisible="1"/>
+                     <field name="current_user_id" invisible="1"/>
+                     <field name="current_user_in_stage_ids" invisible="1"/>
+                     <field name="is_approver" invisible="1"/>
+                     <field name="current_stage_id" invisible="1"/>
+                     <field name="company_id" invisible="1"/>
+                     <field name="employee_info_id" invisible="1"/> -->
+                     
+                     
+                    <button string="Submit" name="action_confirm" type="object" class="oe_highlight"/>
+
+                    <!-- <button string="Approve" name="action_approved_movement" type="object" class="oe_highlight"
+                            invisible="is_approver == True or current_user_id in current_user_in_stage_ids" context="{'button_action': True}"/>
+                    
+
+                    <field name="status" widget="badge" invisible="1" decoration-info="status == 'submitted'"
+                        decoration-warning="status == 'reject'" decoration-success="status == 'approved'"/>
+                    <field name="current_stage_id" widget="statusbar"
+                        domain="[('approval_flow_id', '!=', False), ('approval_flow_id', '=', employee_info_id),('company_id', '=', company_id)]"
+                        groups="advanced_movement.group_user"/> -->
+                </header>
+                <sheet>
+                    <group>
+                        <field name="status" string="Request Status" widget="badge" invisible="1"
+                               decoration-info="status == 'submitted'"
+                               decoration-warning="status == 'reject'" decoration-success="status == 'approved'"/>
+                    </group>
+                    <group name="default_view">
+                        <group name="default_view_left">
+                            <field name="employee_id"/>
+                            <field name="department_id" readonly="True" force_save="True"/>
+                        </group>
+                        <group name="default_view_right">
+                            <field name="company_id" readonly="True" force_save="True"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="reason"/>
+                    </group>
+                    <field name="update_detail" readonly="status != 'draft'">
+                        <tree string="Update Detail" editable="bottom">
+                            <field name="field_id" required="True"/>
+                            <field name="old_value" readonly="True" force_save="True"/>
+                            <field name="new_value"/>
+                        </tree>
+                    </field>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="update_info_tree_view" model="ir.ui.view">
+        <field name="name">update.info.tree</field>
+        <field name="model">update.info</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="employee_id"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="update_info_action" model="ir.actions.act_window">
+        <field name="name">Employee Info Update</field>
+        <field name="res_model">update.info</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create new Employee Info Update.
+            </p>
+        </field>        
+    </record>
+
+    <menuitem
+        id="menu_update_info_action"
+        name="Employee Info Update"
+        action="update_info_action"
+        sequence="25"
+        web_icon="employee_info_update,static/src/description/updated.png"/>
+
+                  
+        <menuitem id="approval_flow_allocation_menu_update_info"
+                  name="Approval Flow"
+                  action="custom_approval_flow.action_approval_allocation_flow"
+                  parent="employee_info_update.menu_update_info_action"
+                  sequence="20"/>
+</odoo>

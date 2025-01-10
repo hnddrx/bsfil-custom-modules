@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_workflow_user,access_workflow_user,model_workflow,base.group_user,1,1,1,1
+access_approvals_user,access_approvals_user,model_approvals,base.group_user,1,1,1,1
+access_multiple_companies_user,access_multiple_companies_user,model_multiple_companies,base.group_user,1,1,1,1
+access_ir_model_user,access.ir.model.user,base.model_ir_model,base.group_user,1,0,0,0
+access_ir_model_fields_user,access.ir.model.fields.user,base.model_ir_model_fields,base.group_user,1,0,0,0
+access_docstatus_user,access_docstatus_user,model_docstatus,base.group_user,1,1,1,1
