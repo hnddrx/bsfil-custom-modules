@@ -1,0 +1,196 @@
+<odoo>
+    <!-- Form View -->
+    <record id="view_notice_to_explain_form" model="ir.ui.view">
+        <field name="name">notice.to.explain.form</field>
+        <field name="model">notice.to.explain</field>
+        <field name="arch" type="xml">
+            <form string="Notice to Explain">
+                  <header>
+                    <div class="oe_header oe_background oe_padding">
+                        <!-- Workflow and Approval Flow -->
+                        <group class="oe_inline">
+                            <!-- Hidden Fields -->
+                            <field name="work_flow" widget="many2one" placeholder="Select Workflow" invisible="1"/>
+                            <field name="module_approval_flow" invisible="1">
+                                <tree editable="bottom">
+                                    <field name="module_approver_name" 
+                                        widget="many2one" 
+                                        options="{'no_create': True}" 
+                                        placeholder="Approver Name" />
+                                    <field name="module_approver_email" 
+                                        widget="email" 
+                                        placeholder="Approver Email" />
+                                    <field name="module_approval_status" 
+                                        placeholder="Approval Status"/>
+                                    <field name="module_doc_status" />
+                                    <field name="module_approval_sequence" 
+                                        placeholder="Approval Sequence"/>
+                                    <field name="module_approval_date" 
+                                        widget="datetime" 
+                                        placeholder="Approval Date"/>
+                                    <field name="module_approval_confirmed" 
+                                        widget="boolean"/>
+                                </tree>
+                            </field>
+                            <field name="can_approve" invisible="1"/>
+                            <field name="can_reject" invisible="1"/>
+                            <field name="can_cancel" invisible="1"/>
+                            <field name="current_sequence" invisible="1"/>
+                            <field name="current_docstatus" invisible="1" />  
+                        </group>
+                        <!-- Action Buttons and Status -->
+                       <div style="width: 100%; max-width: 2000px; margin: auto;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 10px;">
+                                
+                                <!-- Buttons Section -->
+                                <div style="display: flex; gap: 10px;">
+                                    <!-- Submit Button -->
+                                    <button name="action_submit" 
+                                            string="Submit" 
+                                            type="object" 
+                                            class="btn btn-primary" 
+                                            icon="fa-paper-plane" 
+                                            invisible="status != 'Draft'" 
+                                            style="padding: 8px 16px; font-size: 14px; border-radius: 4px;">
+                                    </button>
+                                    
+                                    <!-- Approve Button -->
+                                    <button name="action_approve" 
+                                            string="Approve" 
+                                            type="object" 
+                                            class="btn btn-success" 
+                                            icon="fa-check-circle" 
+                                            invisible="not can_approve or current_docstatus not in (1, 2)"
+                                            style="padding: 8px 16px; font-size: 14px; border-radius: 4px;">
+                                    </button>
+
+                                    <!-- Reject Button -->
+                                    <button name="action_reject"
+                                            string="Reject"
+                                            type="object"
+                                            class="btn btn-warning"
+                                            icon="fa-times-circle"
+                                            invisible="not can_reject or status == 'Rejected'"
+                                            style="padding: 8px 16px; font-size: 14px; border-radius: 4px;">
+                                    </button>
+
+                                    <!-- Cancel Button -->
+                                    <button name="action_cancel"
+                                            string="Cancel"
+                                            type="object"
+                                            class="btn btn-danger"
+                                            icon="fa-times-circle"
+                                            invisible="not can_cancel or status == 'Cancelled'"
+                                            style="padding: 8px 16px; font-size: 14px; border-radius: 4px;">
+                                    </button>
+                                </div>
+                                
+                                
+                                
+                                <!-- Status Badge -->
+                                <div>
+
+                                    <field name="status" 
+                                        widget="badge" 
+                                        decoration-info="current_docstatus == 1" 
+                                        decoration-success="current_docstatus == 2"
+                                        decoration-warning="current_docstatus == 3"
+                                        decoration-danger="current_docstatus == 4"
+                                        style="font-size: 14px; font-weight: bold; padding: 6px 12px; border-radius: 4px;">
+                                    </field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button name="action_generate_report_url" 
+                        type="object"
+                        help="Click here to print Notice to Explain"
+                        style="background: linear-gradient(135deg, #ff6f61, #ff3c3c); 
+                            border: none; 
+                            margin-left:20px;
+                            border-radius: 8px; 
+                            padding: 10px 15px; 
+                            cursor: pointer; 
+                            color: white; 
+                            font-size: 16px; 
+                            display: inline-flex; 
+                            align-items: center; 
+                            justify-content: center;">
+                    <span class="fa fa-file-pdf-o" style="font-size: 18px;"></span>
+                </button>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="incident_report" widget="many2one_tag" options="{'no_create': True}"/>
+                            <field name="employee" widget="many2one_tag"/>
+                            <field name="employee_name"/>
+                            <field name="employee_category" readonly="1"/>
+                            
+                        </group>
+                        <group>
+                            <field name="posting_date"/>
+                            <field name="attachment_ids" widget="many2many_binary" options="{'no_create': True}"/> 
+                            <field name="remarks"/>
+                        </group>
+                    </group>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="notice_to_explain_tree_view" model="ir.ui.view">
+        <field name="name">notice.to.explain.tree</field>
+        <field name="model">notice.to.explain</field>
+        <field name="arch" type="xml">
+            <tree string="Notice to Explain">
+                <field name="doc_name" />
+                <field name="incident_report" />
+                <field name="employee"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="notice_to_explain_kanban_view" model="ir.ui.view">
+        <field name="name">notice.to.explain.kanban</field>
+        <field name="model">notice.to.explain</field>
+        <field name="arch" type="xml">
+            <kanban class="notice_to_explain_kanban">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="o_kanban_card oe_kanban_global_click_edit custom-flex">
+                            <div class="o_kanban_info">
+                                <div><strong>Document Name:</strong> <field name="doc_name" widget='car'/></div>
+                                <div><strong>Incident Report:</strong> <field name="incident_report" widget='many2one' options="{'no_open': True}"/></div>
+                                <div><strong>Employee:</strong> <field name="employee" widget='many2one' options="{'no_open': True}"/></div>
+                                <div><strong>Employee Name:</strong> <field name="employee_name" widget='char'/></div>
+                            </div>
+                        </div>                                 
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="notice_to_explain_action" model="ir.actions.act_window">
+        <field name="name">Notice to Explain</field>
+        <field name="res_model">notice.to.explain</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Use this interface to log and manage all Notice to Explain records. Click "New" to create a new entry.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_notice_to_explain" name="Notice to Explain" action="notice_to_explain_action" sequence="10" web_icon="notice_to_explain,static/src/description/notice (1).png" />
+</odoo>

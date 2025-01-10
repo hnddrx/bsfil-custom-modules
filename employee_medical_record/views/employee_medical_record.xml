@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Form View -->
+    <record id="view_employee_medical_record_form" model="ir.ui.view">
+        <field name="name">employee.medical.record.form</field>
+        <field name="model">employee.medical.record</field>
+        <field name="arch" type="xml">
+            <form string="Employee Medical Record">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee" options="{'no_create_edit': True}"/>
+                            <field name="first_name" />
+                            <field name="last_name" />
+                            <field name="company" />
+                        </group>
+                        <group>
+                            <field name="posting_date" readonly="True"/>
+                            <field name="date"/>
+                            <field name="medical_type" widget="selection"/>
+                            <field name="show_other_type" invisible="1"/>
+                            <field name="other_type" invisible="show_other_type == False"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Duration">
+                            <group>
+                                <field name="from_date"/>
+                                <field name="to_date"/>
+                            </group>
+                        </page>
+                        <page string="Remarks">
+                            <group>
+                                <field name="existing_condition"/>
+                                <field name="other_remarks"/>
+                            </group>
+                        </page>
+                    </notebook>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread" options="{'live_update': True}"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                    </div> 
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_employee_medical_record_tree" model="ir.ui.view">
+        <field name="name">employee.medical.record.tree</field>
+        <field name="model">employee.medical.record</field>
+        <field name="arch" type="xml">
+            <tree string="Employee Medical Records">
+                <field name="doc_name"/>
+                <field name="employee"/>
+                <field name="posting_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action to Open the Employee Medical Record Views -->
+    <record id="action_employee_medical_record" model="ir.actions.act_window">
+        <field name="name">Employee Medical Record</field>
+        <field name="res_model">employee.medical.record</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_employee_medical_record_tree"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create a new Employee Medical Record.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_employee_medical_record" 
+              name="Employee Medical Records" 
+              action="action_employee_medical_record"
+              sequence="10"
+              web_icon="employee_medical_record,static/diagnosis.png"/>
+
+  
+</odoo>

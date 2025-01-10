@@ -1,0 +1,4 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_employee_clearance,access_employee_clearance,model_employee_clearance,base.group_user,1,1,1,1
+access_department_manager,access_department_manager,model_department_manager,base.group_user,1,1,1,1
+access_human_resources,access_human_resources,model_human_resources,base.group_user,1,1,1,1

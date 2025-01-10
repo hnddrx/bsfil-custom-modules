@@ -1,0 +1,4 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_accountability,access_accountability,model_accountability,base.group_user,1,1,1,1
+access_issuance,access_issuance,model_issuance,base.group_user,1,1,1,1
+access_return,access_return,model_return,base.group_user,1,1,1,1

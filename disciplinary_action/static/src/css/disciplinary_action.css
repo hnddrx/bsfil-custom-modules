@@ -1,0 +1,79 @@
+/* General form styling */
+.o_form_sheet {
+    background-color: #f4f7f9; /* Light gray background color */
+    background-image: url('/disciplinary_action/static/description/pn.png'); /* Background image */
+    background-size: cover; /* Ensure the background image covers the entire form */
+    background-position: center;
+    padding: 20px; /* Padding inside the form */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Light shadow around the form */
+}
+
+/* Style form fields */
+.o_form_sheet .oe_title {
+    font-size: 18px;
+    color: #2c3e50; /* Darker text for form titles */
+    margin-bottom: 10px;
+}
+
+.o_form_sheet .o_group {
+    padding: 15px;
+    background-color: #ffffff; /* White background for form groups */
+    border: 1px solid #e1e1e1; /* Light border around groups */
+    border-radius: 5px; /* Slightly rounded corners for groups */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05); /* Light inner shadow */
+}
+
+/* Kanban card styling */
+.o_kanban_card {
+    background-color: #d9edf7; /* Light blue background for kanban cards */
+    border-radius: 10px; /* Rounded corners for kanban cards */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow effect for cards */
+    padding: 15px; /* Padding inside kanban cards */
+    margin-bottom: 10px; /* Space between kanban cards */
+    border: 1px solid #bce8f1; /* Light blue border */
+    transition: transform 0.2s ease-in-out; /* Smooth hover effect */
+}
+
+.o_kanban_card:hover {
+    transform: translateY(-5px); /* Card moves up slightly when hovered */
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2); /* Slightly deeper shadow on hover */
+}
+
+/* Kanban card title styling */
+.o_kanban_title {
+    font-weight: bold;
+    font-size: 16px;
+    color: #31708f; /* Dark blue for kanban titles */
+    margin-bottom: 8px;
+}
+
+/* Kanban field information styling */
+.o_kanban_info div {
+    margin-bottom: 6px; /* Space between information lines */
+}
+
+.o_kanban_info div strong {
+    color: #2c3e50; /* Darker color for field labels */
+}
+
+/* Style for disabled or read-only fields */
+.o_form_sheet .o_readonly {
+    background-color: #f0f4f7; /* Slightly darker background for read-only fields */
+    color: #666666; /* Gray text for read-only fields */
+}
+
+/* Form buttons styling */
+.o_form_buttons_edit .btn-primary {
+    background-color: #4CAF50; /* Custom green color for the 'Save' button */
+    border-color: #45A049;
+}
+
+.o_form_buttons_edit .btn-primary:hover {
+    background-color: #45A049; /* Darker green on hover */
+}
+
+/* Custom widget styling */
+.o_kanban_info .o_field_widget {
+    color: #31708f; /* Custom color for kanban field widgets */
+}

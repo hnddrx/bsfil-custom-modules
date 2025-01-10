@@ -1,0 +1,137 @@
+<odoo>
+    <!-- Form View -->
+    <record id="view_disciplinary_action_form" model="ir.ui.view">
+        <field name="name">disciplinary.action.form</field>
+        <field name="model">disciplinary.action</field>
+        <field name="arch" type="xml">
+            <form string="Disciplinary Action">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="incident_report" placeholder="Select Incident Report" widget="many2one"/>
+                            <field name="employee" placeholder="Select Employee" widget="many2one" />
+                            <field name="employee_name"/>
+                            <field name="department"/>
+                            <field name="branch" invisible="branch == ''"/>
+                            <field name="brand" invisible="branch == ''"/>
+                        </group>
+                        <group>
+                            <field name="posting_date"/>
+                            <field name="terminated_on" invisible="True"/>
+                            <field name="number_of_days" widget="integer"/>
+                            <field name="suspended_from" placeholder="Select Date"/>
+                            <field name="suspended_to" placeholder="Select Date"/>
+                            <field name="attachment_ids" widget="many2many_binary" options="{'no_create': True}"/> 
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Offense and Sanction Details"> 
+                        <group>
+                            <group>
+                                <field name="offense" placeholder="Select Offense" widget="many2one" height="90vh"/>
+                                <field name="offense_description"/>
+                                <field name="sanction" placeholder="Select Sanction" widget="many2one"/>
+                                <field name="description"/>
+                            </group>
+                            <group>
+                                <field name="next_sanction" widget="many2one" placeholder="Select Next Offense"/>
+                                <field name="next_sanction_description"/>
+                            </group>
+                        </group>
+                        </page>
+                        <page string="Underwent"> 
+                            <group>
+                                <field name="underwent" widget="boolean"/>
+                                <field name="underwent_preventive_suspension" widget="boolean"/>
+                            </group>
+
+                        </page>
+                        <page string="Remarks">
+                            <group>
+                                <field name="hearing_remarks" placeholder="Type hearing remarks here."/>
+                            </group>
+                        </page>
+                    </notebook>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="disciplinary_action_tree_view" model="ir.ui.view">
+        <field name="name">disciplinary.action.tree</field>
+        <field name="model">disciplinary.action</field>
+        <field name="arch" type="xml">
+            <tree string="Disciplinalry Action">
+                <field name="doc_name" />
+                <field name="incident_report" />
+                <field name="employee"/>
+                <field name="sanction" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="disciplinary_action_kanban_view" model="ir.ui.view">
+        <field name="name">disciplinary.action.kanban</field>
+        <field name="model">disciplinary.action</field>
+        <field name="arch" type="xml">
+            <kanban class="disciplinary_action_kanban">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="o_kanban_card oe_kanban_global_click_edit custom-flex">
+                            <div class="o_kanban_info">
+                                <div><strong>Document Name:</strong> <field name="doc_name" widget='car'/></div>
+                                <div><strong>Incident Report:</strong> <field name="incident_report" widget='many2one' options="{'no_open': True}"/></div>
+                                <div><strong>Sanction:</strong> <field name="sanction" widget='many2one' options="{'no_open': True}"/></div>
+                                <div><strong>Employee:</strong> <field name="employee" widget='many2one' options="{'no_open': True}"/></div>
+                                <div><strong>Employee Name:</strong> <field name="employee_name" widget='char'/></div>
+                            </div>
+                        </div>                                 
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="disciplinary_action__action" model="ir.actions.act_window">
+        <field name="name">Disciplinary Action</field>
+        <field name="res_model">disciplinary.action</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_id"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create a new Disciplinary Action.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_diciplinary_root" 
+    name="Disciplinary Action" 
+    action="disciplinary_action__action" 
+    sequence="10" 
+    web_icon="disciplinary_action,static/src/description/discipline.png" />
+
+    <!-- Menu Item -->
+
+    <menuitem id="menu_offense_list" 
+        parent="menu_diciplinary_root" 
+        name="Offense List" 
+        action="offense_list.offense_lists_action"
+        sequence="60"
+        />
+
+    <menuitem
+        id="menu_sanction_lists_action"
+        name="Sanction List"
+        parent="menu_diciplinary_root"
+        action="sanction_list.sanction_lists_action"
+        sequence="40"/>
+</odoo>

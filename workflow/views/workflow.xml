@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View -->
+    <record id="workflow_form_view" model="ir.ui.view">
+        <field name="name">workflow.form</field>
+        <field name="model">workflow</field>
+        <field name="arch" type="xml">
+            <form string="Workflow">
+                <sheet>
+                    <group name="workflow_details" string="Workflow Details" class="o_form_group">
+                        <!-- Workflow Name and Module -->
+                        <group>
+                            <!-- Document Name -->
+                            <field name="doc_name" 
+                                placeholder="Enter Document Name" 
+                                string="Document Name" 
+                                required="1" 
+                                class="o_field_doc_name" 
+                                options="{'no_create': True}" />
+
+                            <!-- Module Selection -->
+                            <field name="module_selection" 
+                                placeholder="Select Module" 
+                                string="Module" 
+                                class="o_field_module" 
+                                options="{'no_create': True}" 
+                                widget="selection" />
+
+
+                            <field name="companies_table" widget="one2many_list">
+                                <tree editable="bottom" class="o_kanban_record">
+                                    <!-- Approver Email with auto-complete and more refined placeholder -->
+                                    <field name="company" 
+                                        placeholder="Select Company" 
+                                        options="{'no_create': True}" 
+                                        widget="many2one" />
+                                </tree>
+                            </field>
+
+                        <!-- Job Level Selection -->
+                        <!-- <field name="employee_category" widget="selection"/> -->
+                            
+                        </group>
+
+                        <!-- Action Flow and Active Status -->
+                        <group>
+                            <!-- Action Flow -->
+                            <field name="action_flow" 
+                                string="Action Flow" 
+                                placeholder="Choose Action Flow" 
+                                class="o_field_action_flow"
+                                widget="selection" />
+
+                            <!-- Active Status Toggle -->
+                            <field name="is_active" 
+                                widget="boolean_toggle" 
+                                string="Active" 
+                                class="o_field_active_toggle"
+                                />
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Approvals">
+                            <field name="approvals_table" widget="one2many_list">
+                                <tree editable="bottom" class="o_kanban_record">
+                                    <!-- Approver Email with auto-complete and more refined placeholder -->
+                                    <field name="approver_email" 
+                                        placeholder="Select Approver" 
+                                        options="{'no_create': True}" 
+                                        widget="many2one" class="o_approver_email_field"/>
+
+                                    <!-- Sequence Status with a visually distinct selection -->
+                                    <field name="sequence_status" 
+                                        placeholder="Choose Status" 
+                                        class="o_approver_status_field">
+                                    </field>
+
+                                    <!-- Sequence Field with more intuitive design -->
+                                    <field name="sequence" 
+                                        placeholder="Enter Sequence" 
+                                        class="o_sequence_field" 
+                                        widget="integer" />
+                                    
+                                    <field name="doc_status"  widget="integer" />
+
+                                </tree>
+                            </field>
+                        </page>
+
+                    </notebook>
+                </sheet>
+                <!-- Chatter Section -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread" options="{'live_update': True}"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Approvals Tree View -->
+    <record id="view_approvals_tree" model="ir.ui.view">
+        <field name="name">approvals.tree</field>
+        <field name="model">approvals</field>
+        <field name="arch" type="xml">
+            <tree string="Approvals Table">
+                <field name="approver_email" string="Approver Email"/>
+                <field name="sequence_status" string="Status"/>
+                <field name="sequence" string="Sequence"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Companies Tree View -->
+    <record id="view_multiple_companies_tree" model="ir.ui.view">
+        <field name="name">multiple.companies.tree</field>
+        <field name="model">multiple.companies</field>
+        <field name="arch" type="xml">
+            <tree string="Approvals Table">
+                <field name="company"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Workflow Tree View -->
+    <record id="workflow_tree_view" model="ir.ui.view">
+        <field name="name">workflow.tree</field>
+        <field name="model">workflow</field>
+        <field name="arch" type="xml">
+            <tree string="Workflow" decoration-info="is_active" decoration-muted="not is_active">
+                <!-- Document Name with bold and emphasis -->
+                <field name="doc_name" string="Document Name" widget="char" class="o_tree_text_bold"/>
+
+                <!-- Module with enhanced icon display -->
+                <field name="module_selection" string="Module" widget="selection" options="{'no_create': True}"/>
+
+                <!-- Active Status with a toggle switch for better interactivity -->
+                <field name="is_active" widget="boolean_toggle" string="Active" class="o_tree_boolean_toggle"/>
+
+                <!-- Action Flow with icons and tooltip for better clarity -->
+                <field name="action_flow"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_workflow" model="ir.actions.act_window">
+        <field name="name">Workflow</field>
+        <field name="res_model">workflow</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Manage all workflows here. Click <b>Create</b> to add a new workflow.
+            </p>
+        </field>
+    </record>
+        <!-- Root Menu for Workflow Management -->
+        <menuitem id="menu_workflow_root" 
+                  name="Workflow Management" 
+                  sequence="5"/>
+        
+        <!-- Child Menu for Workflow -->
+        <menuitem id="menu_workflow_child" 
+                  name="Workflow" 
+                  parent="menu_workflow_root" 
+                  action="action_workflow" 
+                  sequence="10"/>
+        
+        <menuitem id="menu_docstatus_child" 
+                    name="Docstatus" 
+                    parent="menu_workflow_root" 
+                    action="workflow.action_docstatus" 
+                    sequence="15" />
+</odoo>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_accountability_tree" model="ir.ui.view">
+        <field name="name">accountability.tree</field>
+        <field name="model">accountability</field>
+        <field name="arch" type="xml">
+            <tree string="Employee Accountability Records">
+                <field name="doc_name"/>
+                <field name="employee"/>
+                <field name="accountability_type"/> 
+                <field name="posting_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_accountability_form" model="ir.ui.view">
+        <field name="name">accountability.form</field>
+        <field name="model">accountability</field>
+        <field name="arch" type="xml">
+            <form string="Employee Accountability">
+                <sheet>
+                    <group>
+                    
+                    </group>
+                    <group>
+                        <group>
+                            <field name="employee" class="ds_o_field" options="{'no_create': True}" />
+                            <field name="accountability_type" class="ds_o_field" />
+                        </group>
+
+                        <group>
+                            <field name="posting_date" class="ds_o_field" readonly="1"/>
+                            <field name="company" class="ds_o_field" />
+                            <field name="department" class="ds_o_field" />
+                            
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Issuance Table" invisible = "accountability_type == 'return'" >
+                            <field name="issuance_table">
+                                <tree editable="bottom">
+                                    <field name="item_name"/>
+                                    <field name="item_code"/>
+                                    <field name="quantity"/>
+                                    <field name="date_issued"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page string="Return Table" invisible = "accountability_type == 'issuance'">
+                            <field name="return_table">
+                                <tree editable="bottom">
+                                    <field name="item_name"/>
+                                    <field name="item_code"/>
+                                    <field name="quantity"/>
+                                    <field name="date_issued"/>
+                                    <field name="return_to"/>
+                                    <field name="date_returned"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Remarks">
+                            <field name="remarks" string="" placeholder="Type here" />
+                            <field name="attachment_ids" widget="many2many_binary" options="{'no_create': True}"/> 
+                        </page>
+                    
+                    </notebook>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread" options="{'live_update': True}"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                    </div> 
+                </sheet>
+
+                
+            </form>
+        </field>
+    </record>
+
+    <record id="view_issuance_tree" model="ir.ui.view">
+        <field name="name">issuance.tree</field>
+        <field name="model">issuance</field>
+        <field name="arch" type="xml">
+            <tree string="Issuance Table">
+                <field name="item_name"/>
+                <field name="item_code"/>
+                <field name="quantity"/>
+                <field name="date_issued"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_return_tree" model="ir.ui.view">
+        <field name="name">return.tree</field>
+        <field name="model">return</field>
+        <field name="arch" type="xml">
+            <tree string="Issuance Table">
+                <field name="item_name"/>
+                <field name="item_code"/>
+                <field name="quantity"/>
+                <field name="date_issued"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action to Open the Views -->
+    <record id="action_accountability" model="ir.actions.act_window">
+        <field name="name">Employee Accountability</field>
+        <field name="res_model">accountability</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+               Use this interface to log and manage all accountability records. Click "New" to create a new entry.
+            </p>
+        </field>
+    </record>
+    <!-- Menu Item to Access the Model -->
+    <menuitem id="menu_employee_accountability" name="Employee Accountability" action="action_accountability"  web_icon="accountability/static/src/desciption/accountability.png"/>
+</odoo>

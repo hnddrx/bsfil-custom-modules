@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Form View -->
+    <record id="view_medical_type_form" model="ir.ui.view">
+        <field name="name">medical.type.form</field>
+        <field name="model">medical.type</field>
+        <field name="arch" type="xml">
+            <form string="Employee Medical Type">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" class="ds_o_field"/>
+                            <field name="description" class="ds_o_field"/>
+                        </group>
+                    </group> 
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread" options="{'live_update': True}"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                    </div> 
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_medical_type_tree" model="ir.ui.view">
+        <field name="name">medical.type.tree</field>
+        <field name="model">medical.type</field>
+        <field name="arch" type="xml">
+            <tree string="Employee Medical Type">
+                <field name="name"/>
+                <field name="description"/> 
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_medical_type" model="ir.actions.act_window">
+        <field name="name">Medical Type</field>
+        <field name="res_model">medical.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create a new Medical Type.
+            </p>
+        </field>
+    </record>
+    
+
+    <menuitem id="employee_medical_record_root"
+              name="Settings"
+            parent="menu_employee_medical_record"
+    />
+
+    <menuitem id="menu_medical_type"
+              name="Medical Type"
+              action="action_medical_type"
+              parent="employee_medical_record_root"
+    />
+
+</odoo>

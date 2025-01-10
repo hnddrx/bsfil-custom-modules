@@ -1,0 +1,11 @@
+<odoo>
+    <data noupdate="1">
+        <record id="seq_employee_medical_record" model="ir.sequence">
+            <field name="name">Employee Medical Record Sequence</field>
+            <field name="code">employee.medical.record</field>
+            <field name="prefix">EMR</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+        </record>
+    </data>
+</odoo>

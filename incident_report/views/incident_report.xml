@@ -1,0 +1,210 @@
+<odoo>
+    <!-- Form View -->
+    <record id="view_incident_report_form" model="ir.ui.view">
+        <field name="name">incident.report.form</field>
+        <field name="model">incident.report</field>
+        <field name="arch" type="xml">
+            <form string="Incident Report">
+                <header>
+                    <div class="oe_header oe_background oe_padding">
+                        <!-- Workflow and Approval Flow -->
+                        <group class="oe_inline">
+                            <!-- Hidden Fields -->
+                            <field name="work_flow" widget="many2one" placeholder="Select Workflow" invisible="1"/>
+                            <field name="module_approval_flow" invisible="1">
+                                <tree editable="bottom">
+                                    <field name="module_approver_name" 
+                                        widget="many2one" 
+                                        options="{'no_create': True}" 
+                                        placeholder="Approver Name" />
+                                    <field name="module_approver_email" 
+                                        widget="email" 
+                                        placeholder="Approver Email" />
+                                    <field name="module_approval_status" 
+                                        placeholder="Approval Status"/>
+                                    <field name="module_doc_status" />
+                                    <field name="module_approval_sequence" 
+                                        placeholder="Approval Sequence"/>
+                                    <field name="module_approval_date" 
+                                        widget="datetime" 
+                                        placeholder="Approval Date"/>
+                                    <field name="module_approval_confirmed" 
+                                        widget="boolean"/>
+                                </tree>
+                            </field>
+                            <field name="can_approve" invisible="1"/>
+                            <field name="can_reject" invisible="1"/>
+                            <field name="can_cancel" invisible="1"/>
+                            <field name="current_sequence" invisible="1"/>
+                            <field name="current_docstatus" invisible="1" />  
+                        </group>
+                        <!-- Action Buttons and Status -->
+                        <div style="width: 100%; max-width: 2000px; margin: auto;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 10px;">
+                                
+                                <!-- Buttons Section -->
+                                <div style="display: flex; gap: 10px;">
+                                    <!-- Submit Button -->
+                                    <button name="action_submit" 
+                                            string="Submit" 
+                                            type="object" 
+                                            class="btn btn-primary" 
+                                            icon="fa-paper-plane" 
+                                            invisible="status != 'Draft'" 
+                                            style="padding: 8px 16px; font-size: 14px; border-radius: 4px;">
+                                    </button>
+                                    
+                                    <!-- Approve Button -->
+                                    <button name="action_approve" 
+                                            string="Approve" 
+                                            type="object" 
+                                            class="btn btn-success" 
+                                            icon="fa-check-circle" 
+                                            invisible="not can_approve or current_docstatus not in (1, 2)"
+                                            style="padding: 8px 16px; font-size: 14px; border-radius: 4px;">
+                                    </button>
+
+                                    <!-- Reject Button -->
+                                    <button name="action_reject"
+                                            string="Reject"
+                                            type="object"
+                                            class="btn btn-warning"
+                                            icon="fa-times-circle"
+                                            invisible="not can_reject or status == 'Rejected'"
+                                            style="padding: 8px 16px; font-size: 14px; border-radius: 4px;">
+                                    </button>
+
+                                    <!-- Cancel Button -->
+                                    <button name="action_cancel"
+                                            string="Cancel"
+                                            type="object"
+                                            class="btn btn-danger"
+                                            icon="fa-times-circle"
+                                            invisible="not can_cancel or status == 'Cancelled'"
+                                            style="padding: 8px 16px; font-size: 14px; border-radius: 4px;">
+                                    </button>
+                                </div>
+                                <div>
+
+                                    <field name="status" 
+                                        widget="badge" 
+                                        decoration-info="current_docstatus == 1" 
+                                        decoration-success="current_docstatus == 2"
+                                        decoration-warning="current_docstatus == 3"
+                                        decoration-danger="current_docstatus == 4"
+                                        style="font-size: 14px; font-weight: bold; padding: 6px 12px; border-radius: 4px;">
+                                    </field>
+                                </div>
+                                
+                            </div>
+                                
+                        </div>
+                    </div>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="doc_name" invisible="1" readonly="current_docstatus != 0"/>
+                            <field name="incident_location" placeholder="Type location here" readonly="current_docstatus != 0"/>
+                            <!-- <field name="department" placeholder="Select Department" readonly="current_docstatus != 0"/> -->
+                            <!-- <field name="employee_category" placeholder="Employee Category" widget="selection"   readonly="current_docstatus != 0"/> -->
+                            <field name="section" placeholder="Select Department" invisible="section == False" readonly="current_docstatus != 0"/>
+                            <field name="branch" placeholder="Select Department" invisible="branch == False" readonly="current_docstatus != 0"/>
+                        </group>
+                        <group> 
+                            <field name="posting_date"/>   
+                            <field name="date_and_time_of_offense" placeholder="Select date" readonly="current_docstatus != 0"/>
+                            <field name="expected_da" placeholder="Select Disciplinary Action" widget="many2one" readonly="current_docstatus != 0"/>
+                            <field name="reported_by" readonly="1"/>
+                            <field name="date_reported" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <!-- If clearance type is  equal to resignation then show page -->
+                        <page string="Involved Employees" readonly="current_docstatus != 0">
+                            <field name="involved_employees" readonly="current_docstatus != 0">
+                                <tree editable="bottom">
+                                    <field name="employee"/>
+                                    <field name="employee_name"/>
+                                    <field name="involvement"/>
+                                    <field name="department"/>
+                                    <field name="branch"/>
+                                    <field name="brand"/>   
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Corrective Action" >
+                            <field name="corrective_action" string="" placeholder="Type corrective action here" readonly="current_docstatus != 0" />
+                        </page>
+                        <page string="Details of violation">
+                            <field name="details_of_violation" string="" placeholder="Type details of violation here" readonly="current_docstatus != 0"/>
+                        </page>
+                        <page>
+                            <field name="damage_done" string="" placeholder="Type damage done here" readonly="current_docstatus != 0"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                
+            </form>
+        </field>
+    </record>
+    <record id="incident_report_tree_view" model="ir.ui.view">
+        <field name="name">incident.report.tree</field>
+        <field name="model">incident.report</field>
+        <field name="arch" type="xml">
+            <tree string="Incident Report">
+                 <field name="doc_name"/> 
+                <field name="posting_date"/>
+                <field name="date_and_time_of_offense" />
+                <field name="status" widget="badge"
+                        decoration-info="current_docstatus == 1" 
+                        decoration-success="current_docstatus == 2"
+                        decoration-warning="current_docstatus == 3"
+                        decoration-danger="current_docstatus == 4"
+                />
+                <field name="current_docstatus"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_involved_employees_tree" model="ir.ui.view">
+        <field name="name">involved.employees.tree</field>
+        <field name="model">involved.employees</field>
+        <field name="arch" type="xml">
+            <tree string="Involved Employees">
+                <field name="employee"/>
+                <field name="employee_name"/>
+                <field name="involvement"/>
+                <field name="department"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="incident_report_action" model="ir.actions.act_window">
+        <field name="name">Incident Report</field>
+        <field name="res_model">incident.report</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_id" ref="incident_report_tree_view"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create a new Incident Report.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_incident_root" 
+    name="Incident Report" 
+    action="incident_report_action" 
+    sequence="10" 
+    web_icon="incident_report,static/financial-report.png"/>
+
+    <!-- Child Menu Item for Employee Medical Type -->
+   
+
+</odoo>
